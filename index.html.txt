@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Columbus East Tax Services</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #ffffff;
+            max-width: 360px;
+            width: 100%;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #1f2933;
+        }
+
+        .info {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #4b5563;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        .buttons a.text {
+            background: #16a34a;
+        }
+
+        .buttons a.email {
+            background: #9333ea;
+        }
+
+        .buttons a:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Columbus East Tax Services</h1>
+
+        <div class="info">
+            Columbus, Ohio 43227
+        </div>
+
+        <div class="info">
+            📞 614-599-1185<br>
+            📞 614-259-7625
+        </div>
+
+        <div class="info">
+            ✉️ Columbuseast.taxservices@outlook.com
+        </div>
+
+        <div class="buttons">
+            <a href="tel:16145991185">Call 614-599-1185</a>
+            <a href="sms:16145991185" class="text">Text 614-599-1185</a>
+            <a href="mailto:Columbuseast.taxservices@outlook.com" class="email">
+                Email Us
+            </a>
+        </div>
+
+        <footer>
+            Tap to call, text, or email
+        </footer>
+    </div>
+
+</body>
+</html>
