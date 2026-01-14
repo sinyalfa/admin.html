@@ -1,24 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Book Appointment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+}
+
+button {
+  margin-top: 18px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+#message {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.success { color: #16a34a; }
+.error { color: #dc2626; }
+</style>
+</head>
+
 <body>
-<h2>Admin – Appointments</h2>
-<table id="table" border="1"></table>
+
+<div class="card">
+  <h2>Book Appointment</h2>
+
+  <form id="bookingForm">
+    <label>Name</label>
+    <input id="name" required>
+
+    <label>Email</label>
+    <input id="email" type="email" required>
+
+    <label>Service</label>
+    <select id="service" required>
+      <option value="">Select a service</option>
+      <option value="00000000-0000-0000-0000-000000000001">W-2</option>
+      <option value="00000000-0000-0000-0000-000000000002">1099</option>
+      <option value="00000000-0000-0000-0000-000000000003">LLC / Business</option>
+      <option value="00000000-0000-0000-0000-000000000004">Audit Help</option>
+    </select>
+
+    <label>Date & Time</label>
+    <input id="time" type="datetime-local" required>
+
+    <button type="submit">Confirm Booking</button>
+  </form>
+
+  <div id="message"></div>
+</div>
 
 <script>
-fetch("https://zleztbdrxnqirccgkvqx.supabase.co/rest/v1/appointments", {
-  headers: {
-    "apikey": "sb_publishable_pXXUCH_hx0eg7tUbQNz3rw_DaJgACMR",
-    "Authorization": "Bearer sb_publishable_pXXUCH_hx0eg7tUbQNz3rw_DaJgACMR"
+const form = document.getElementById("bookingForm")
+const message = document.getElementById("message")
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault()
+
+  message.textContent = "Submitting..."
+  message.className = ""
+
+  const payload = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    service_id: document.getElementById("service").value,
+    start_time: new Date(
+      document.getElementById("time").value
+    ).toISOString()
+  }
+
+  try {
+    const res = await fetch(
+      "https://zleztbdrxnqirccgkvqx.supabase.co/functions/v1/book-appointment",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // 🔑 REQUIRED WORKAROUND
+          "Authorization": "Bearer public"
+        },
+        body: JSON.stringify(payload)
+      }
+    )
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.error || "Booking failed")
+    }
+
+    message.textContent = "✅ Appointment booked successfully!"
+    message.className = "success"
+    form.reset()
+
+  } catch (err) {
+    message.textContent = "❌ " + err.message
+    message.className = "error"
   }
 })
-.then(r => r.json())
-.then(rows => {
-  document.getElementById("table").innerHTML =
-    "<tr><th>Name</th><th>Email</th><th>Time</th></tr>" +
-    rows.map(r =>
-      `<tr><td>${r.client_name}</td><td>${r.client_email}</td><td>${r.start_time}</td></tr>`
-    ).join("")
-})
 </script>
+
 </body>
 </html>
